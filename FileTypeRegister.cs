@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace rans0m
@@ -7,7 +9,10 @@ namespace rans0m
     {
         private const string ClassesRoot = @"Software\Classes";
 
-        // ----------------------------- PUBLIC METHODS -----------------------------
+        private static readonly string[] GoldExtensions = { ".gold1", ".gold2", ".gold3", ".gold4", ".gold5", ".gold6", ".crucifix" };
+        private static readonly string[] GoldFileTypeNames = { "GoldFile1", "GoldFile2", "GoldFile3", "GoldFile4", "GoldFile5", "GoldFile6", "CrucifixFile" };
+
+        // ---------------- PUBLIC METHODS ----------------
 
         /// <summary>
         /// Registers a file type with the specified extension and icon.
@@ -22,11 +27,11 @@ namespace rans0m
                 string iconPath = SaveIconToDisk(icon, extension.TrimStart('.'));
 
                 // Maps the extension to fileTypeName
-                using (var extKey = Registry.CurrentUser.CreateSubKey(Combine(ClassesRoot, extension)))
+                using (RegistryKey extKey = Registry.CurrentUser.CreateSubKey(Combine(ClassesRoot, extension)))
                 { extKey.SetValue("", fileTypeName); }
 
                 // Links the .ico file to the fileTypeName
-                using (var defaultIconKey = Registry.CurrentUser.CreateSubKey(Combine(ClassesRoot, fileTypeName, "DefaultIcon")))
+                using (RegistryKey defaultIconKey = Registry.CurrentUser.CreateSubKey(Combine(ClassesRoot, fileTypeName, "DefaultIcon")))
                 { defaultIconKey.SetValue("", iconPath); }
 
                 NotifyShellOfChange();
@@ -36,18 +41,35 @@ namespace rans0m
         /// <summary>
         /// Unregisters a file type with the specified extension and icon.
         /// </summary>
-        public static void UnregisterFileType(string extension, string fileTypeName) // Not used, idk if I want to implement it
+        public static void UnregisterFileType(string extension, string fileTypeName)
         {
             Registry.CurrentUser.DeleteSubKeyTree(Combine(ClassesRoot, extension), throwOnMissingSubKey: false);
             Registry.CurrentUser.DeleteSubKeyTree(Combine(ClassesRoot, fileTypeName), throwOnMissingSubKey: false);
             NotifyShellOfChange();
         }
 
+        /// <summary>
+        /// Unregisters every .gold1-6/.crucifix file type and removes the icon files/folder written to disk for them.
+        /// </summary>
+        public static void UnregisterAllGoldFileTypes()
+        {
+            for (int i = 0; i < GoldExtensions.Length; i++)
+            {
+                UnregisterFileType(GoldExtensions[i], GoldFileTypeNames[i]);
+            }
+
+            try
+            {
+                string iconFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RANSOM");
+                if (Directory.Exists(iconFolder))
+                    Directory.Delete(iconFolder, true);
+            }
+            catch { }
+        }
 
 
 
-
-        // ----------------------------- PRIVATE METHODS -----------------------------
+        // ------------------ PRIVATE METHODS ------------------
 
         private static string SaveIconToDisk(Icon icon, string extensionName)
         {
@@ -55,7 +77,7 @@ namespace rans0m
             Directory.CreateDirectory(folder);
 
             string iconPath = Path.Combine(folder, extensionName + ".ico");
-            using var fs = new FileStream(iconPath, FileMode.Create, FileAccess.Write);
+            using FileStream fs = new FileStream(iconPath, FileMode.Create, FileAccess.Write);
             icon.Save(fs);
             return iconPath;
         }

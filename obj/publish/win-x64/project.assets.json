@@ -161,6 +161,22 @@
         "build": {
           "buildTransitive/net8.0/_._": {}
         }
+      },
+      "XamlAnimatedGif/2.3.2": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0-windows7.0/XamlAnimatedGif.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net5.0-windows7.0/XamlAnimatedGif.dll": {
+            "related": ".pdb"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
       }
     },
     "net10.0-windows/win-x64": {
@@ -323,6 +339,22 @@
         "build": {
           "buildTransitive/net8.0/_._": {}
         }
+      },
+      "XamlAnimatedGif/2.3.2": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0-windows7.0/XamlAnimatedGif.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/net5.0-windows7.0/XamlAnimatedGif.dll": {
+            "related": ".pdb"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
       }
     }
   },
@@ -546,12 +578,31 @@
         "system.numerics.tensors.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "XamlAnimatedGif/2.3.2": {
+      "sha512": "Wy8XkF7XVWZHz6I93S+051UYhsx3B3GgQ1wnQzMs1xlxyvFye4UuSKW/7KPfPh2Fg3B4RjurL3bAyi2D9pbhLA==",
+      "type": "package",
+      "path": "xamlanimatedgif/2.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "assets/xamlanimatedgif.png",
+        "lib/net45/XamlAnimatedGif.dll",
+        "lib/net45/XamlAnimatedGif.pdb",
+        "lib/net5.0-windows7.0/XamlAnimatedGif.dll",
+        "lib/net5.0-windows7.0/XamlAnimatedGif.pdb",
+        "lib/netcoreapp3.1/XamlAnimatedGif.dll",
+        "lib/netcoreapp3.1/XamlAnimatedGif.pdb",
+        "xamlanimatedgif.2.3.2.nupkg.sha512",
+        "xamlanimatedgif.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net10.0-windows": [
       "Microsoft.NET.ILLink.Tasks >= 10.0.10",
-      "NAudio >= 3.0.1"
+      "NAudio >= 3.0.1",
+      "XamlAnimatedGif >= 2.3.2"
     ]
   },
   "packageFolders": {
@@ -559,13 +610,13 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.1",
+    "version": "2.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ixar\\Desktop\\ransomdoors\\rans0m.csproj",
-      "projectName": "ransom",
-      "projectPath": "C:\\Users\\Ixar\\Desktop\\ransomdoors\\rans0m.csproj",
+      "projectUniqueName": "C:\\Users\\Ixar\\Desktop\\claudio\\rans0m\\rans0m.csproj",
+      "projectName": "rans0m",
+      "projectPath": "C:\\Users\\Ixar\\Desktop\\claudio\\rans0m\\rans0m.csproj",
       "packagesPath": "C:\\Users\\Ixar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ixar\\Desktop\\ransomdoors\\obj\\publish\\win-x64\\",
+      "outputPath": "C:\\Users\\Ixar\\Desktop\\claudio\\rans0m\\obj\\publish\\win-x64\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -616,6 +667,10 @@
           "NAudio": {
             "target": "Package",
             "version": "[3.0.1, )"
+          },
+          "XamlAnimatedGif": {
+            "target": "Package",
+            "version": "[2.3.2, )"
           }
         },
         "imports": [
@@ -651,7 +706,7 @@
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           },
-          "Microsoft.WindowsDesktop.App.WindowsForms": {
+          "Microsoft.WindowsDesktop.App.WPF": {
             "privateAssets": "none"
           }
         },

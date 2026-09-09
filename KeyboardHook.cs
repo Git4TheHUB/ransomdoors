@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace rans0m
 {
@@ -44,7 +45,7 @@ namespace rans0m
             GC.SuppressFinalize(this);
         }
 
-        ~KeyboardHook()
+        ~KeyboardHook() // GC
         {
             Unhook();
         }

@@ -4,43 +4,28 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Authors>Ixar</Authors>
-    <PackageIcon>stop_sign.png</PackageIcon>
-    <AssemblyName>ransom</AssemblyName>
-    <ApplicationIcon>main_ico.ico</ApplicationIcon>
-    <Version>1.0.1</Version>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\CD-1.ico</ApplicationIcon>
+    <Version>2.0.0.0</Version>
+    <Company>Ixar</Company>
+    <Copyright>Ixar</Copyright>
+    <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="main_ico.ico" />
+	  <Resource Include="Assets\**\*.*">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\stop_sign.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Content Include="Assets\CD-1.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NAudio" Version="3.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <PackageReference Include="XamlAnimatedGif" Version="2.3.2" />
   </ItemGroup>
 
 </Project>
