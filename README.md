@@ -54,8 +54,7 @@ Or open `rans0m.slnx` in Visual Studio and hit F5.
 
 The app runs from a system tray icon. Right-click it for:
 - **Configuration** — opens the settings window (see below).
-- **Close** — disabled while a ransom is active, so you can't just dodge it
-  from the tray.
+- **Close** — disabled while a ransom is active
 
 ## Configuration
 
