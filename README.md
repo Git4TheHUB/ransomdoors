@@ -53,8 +53,18 @@ dotnet run
 Or open `rans0m.slnx` in Visual Studio and hit F5.
 
 The app runs from a system tray icon. Right-click it for:
+- **Open Chrome mode** — opens the browser version in a real Chrome window. The controller then opens the ransom and taunt windows as real popup windows.
 - **Configuration**
 - **Close**
+
+## Chrome mode
+
+Chrome mode is a browser-safe version of the visual game. It keeps the warning,
+attack, download, timer, taunt popups, generated `.gold` downloads, drag/drop
+payment, and completion screens. Chrome does not allow a web page to change the
+desktop wallpaper or cursor, register file extensions, inspect global mouse or
+keyboard input, shut down the computer, or run shell commands, so those native
+Windows-only features remain available only in the WPF mode.
 
 ## Configuration
 

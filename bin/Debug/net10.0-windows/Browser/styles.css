@@ -1,0 +1,44 @@
+@font-face {
+  font-family: ransom-mono;
+  src: local("Consolas"), local("Cascadia Mono"), monospace;
+}
+:root { color-scheme: dark; font-family: ransom-mono, monospace; background: #100000; color: #fff; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: radial-gradient(circle at center, #4b0000 0, #170000 45%, #050000 100%); }
+button { border: 2px solid #ffcf25; background: #080808; color: #ffcf25; padding: 14px 20px; font: inherit; font-weight: 700; cursor: pointer; }
+button:hover, button:focus-visible { background: #ffcf25; color: #210000; }
+.launcher { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.launcher-card { width: min(520px, 100%); text-align: center; padding: 34px; border: 2px solid #ff2b1c; background: #090000; box-shadow: 0 0 0 8px #1f0000, 0 0 40px #ff1b0c; }
+.launcher-face { width: 170px; height: 170px; object-fit: cover; }
+h1 { color: #ff2b1c; letter-spacing: 8px; margin: 12px 0; }
+.status { min-height: 2.5em; color: #c8c8c8; font-size: 12px; }
+.game { min-height: 100vh; padding: 22px; overflow: hidden; }
+.game.infected { background: radial-gradient(circle, #8b0000 0, #240000 70%); }
+.panel { max-width: 760px; margin: 0 auto; border: 2px solid #fff; background: #f82b1c; padding: 18px; }
+.warning { display: grid; grid-template-columns: 190px 1fr; gap: 15px; align-items: center; }
+.warning img { width: 188px; height: 188px; }
+.warning h1 { color: #fff; font-size: clamp(24px, 5vw, 44px); letter-spacing: 0; margin: 0; }
+.attack { text-align: center; display: none; }
+.attack img { width: min(360px, 80vw); animation: shake 70ms infinite alternate; }
+@keyframes shake { from { transform: translate(-8px, 5px) rotate(-2deg); } to { transform: translate(8px, -5px) rotate(2deg); } }
+.download { display: none; text-align: center; font-size: 24px; padding: 80px 10px; }
+.download-bar { height: 30px; border: 2px solid #fff; margin-top: 24px; background: repeating-linear-gradient(90deg, #ffcf25 0 20px, #6f0000 20px 25px); animation: load 1.2s linear infinite; }
+@keyframes load { to { background-position: 45px 0; } }
+.controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+.ransom-panel { display: none; min-height: 390px; }
+.ransom-panel h2 { font-size: clamp(25px, 6vw, 44px); text-align: center; margin: 0 0 14px; }
+.ransom-copy { background: #000; padding: 16px; text-align: center; }
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.stat { border: 2px solid #ffcf25; background: #000; color: #ffcf25; padding: 12px; font-size: clamp(22px, 5vw, 42px); text-align: center; }
+.dropzone { border: 2px dashed #fff; padding: 20px; text-align: center; margin-top: 14px; }
+.dropzone.over { background: #8b0000; }
+.coin-drawer { border: 2px solid #ffcf25; background: #090000; padding: 12px; margin-top: 14px; }
+.coin { display: inline-block; margin: 4px; padding: 7px 10px; color: #ffcf25; border: 1px solid #ffcf25; cursor: grab; }
+.taunt { min-height: 100vh; display: grid; place-items: center; background: #320000; }
+.taunt img { width: 100%; height: 100%; object-fit: cover; }
+.result { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 20px; }
+.result.thanks { background: linear-gradient(#81de00, #117f00 65%, #050800); }
+.result.crucifix { background: #000; }
+.result img { max-width: 90vw; max-height: 80vh; }
+@media (max-width: 600px) { .warning { grid-template-columns: 1fr; text-align: center; } .warning img { margin: auto; } .panel { padding: 12px; } }

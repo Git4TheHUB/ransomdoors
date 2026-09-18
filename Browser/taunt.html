@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RANS0M</title><link rel="stylesheet" href="styles.css"></head>
+<body class="taunt"><img id="image" src="../Assets/Taunts/tauntface.png" alt="Taunt"><script>
+const image = document.querySelector('#image');
+window.addEventListener('message', event => {
+  if (!event.data) return;
+  document.title = event.data.title || 'RANS0M';
+  image.src = `../Assets/Taunts/${event.data.image}`;
+});
+setTimeout(() => window.close(), 7000);
+</script></body>
+</html>

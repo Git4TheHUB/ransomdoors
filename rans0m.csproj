@@ -21,6 +21,12 @@
 
   <ItemGroup>
     <Content Include="Assets\CD-1.ico" />
+    <Content Include="Browser\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\Taunts\**\*.*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\ransom_idle.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\ransom_attack.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\repent.gif" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Assets\thx_txt.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -105,6 +105,7 @@ namespace rans0m
         {
             ContextMenuStrip trayMenu = new ContextMenuStrip();
 
+            trayMenu.Items.Add("Open Chrome mode").Click += (s, e) => BrowserMode.Open();
             trayMenu.Items.Add("Configuration").Click += (s, e) => new ConfigWindow().Show();
             trayMenu.Items.Add("Close").Click += (s, e) => WpfApplication.Current.Shutdown();
 

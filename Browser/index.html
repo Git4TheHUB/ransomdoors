@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RANS0M Chrome Mode</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="launcher">
+  <main class="launcher-card">
+    <img src="../Assets/ransom_idle.png" alt="RANS0M" class="launcher-face">
+    <h1>RANS0M</h1>
+    <p>Chrome mode uses real browser popup windows. Keep this controller open while playing.</p>
+    <button id="start" type="button">Open popup windows</button>
+    <p id="status" class="status" aria-live="polite">Popup permission is requested when you press the button.</p>
+  </main>
+  <script>
+    const status = document.querySelector('#status');
+    document.querySelector('#start').addEventListener('click', () => {
+      const popup = window.open('game.html', 'rans0m-game', 'popup,width=900,height=700,resizable=no');
+      if (!popup) {
+        status.textContent = 'Chrome blocked the popup. Allow popups for this page and try again.';
+        return;
+      }
+      status.textContent = 'Game popup opened. Leave this controller window open.';
+      popup.focus();
+    });
+  </script>
+</body>
+</html>

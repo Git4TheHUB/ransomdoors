@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RANS0M</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="game" id="game">
+  <section class="panel warning" id="warning">
+    <img src="../Assets/ransom_idle.png" alt="RANS0M">
+    <h1>MOVE IF YOU DARE</h1>
+  </section>
+  <section class="panel attack" id="attack"><img src="../Assets/ransom_attack.png" alt="RANS0M attack"></section>
+  <section class="panel download" id="download">
+    <strong>DOWNLOADING<span id="dots"></span></strong>
+    <div class="download-bar"></div>
+  </section>
+  <section class="panel ransom-panel" id="ransom">
+    <h2>YOUR FILES HAVE BEEN ENCRYPTED</h2>
+    <div class="ransom-copy">IF YOU DO NOT PAY THIS RANSOM BEFORE THE TIMER ENDS, YOUR FILES WILL <b style="color:red">UNRECOVERABLE BY ANY MEANS.</b></div>
+    <div class="stats"><div class="stat"><span id="amount">500</span> GOLD</div><div class="stat" id="timer">TIME: 00:00</div></div>
+    <div class="dropzone" id="dropzone">Drop generated .gold or .crucifix files here</div>
+    <div class="coin-drawer" id="drawer"></div>
+  </section>
+  <div class="controls"><button id="spawn" type="button">Trigger ransom</button><button id="downloadCoins" type="button">Download gold files</button></div>
+  <script src="game.js"></script>
+</body>
+</html>

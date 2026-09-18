@@ -8,5 +8,24 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/cd-1.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/crucifix.html")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/game.html")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/game.js")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/index.html")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/styles.css")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/taunt.html")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("browser/thank-you.html")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/glitch1.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/glitch2.jpeg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/glitch3.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/glitch4.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/glitch5.jpg")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/idiot.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/tauntface.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/taunts/tauntflower.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/ransom_idle.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/ransom_attack.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/repent.gif")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/thx_txt.png")]
 
 
