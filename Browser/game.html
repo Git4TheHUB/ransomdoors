@@ -16,13 +16,30 @@
     <strong>DOWNLOADING<span id="dots"></span></strong>
     <div class="download-bar"></div>
   </section>
-  <section class="panel ransom-panel" id="ransom">
-    <h2>YOUR FILES HAVE BEEN ENCRYPTED</h2>
-    <div class="ransom-copy">IF YOU DO NOT PAY THIS RANSOM BEFORE THE TIMER ENDS, YOUR FILES WILL <b style="color:red">UNRECOVERABLE BY ANY MEANS.</b></div>
-    <div class="stats"><div class="stat"><span id="amount">500</span> GOLD</div><div class="stat" id="timer">TIME: 00:00</div></div>
-    <div class="dropzone" id="dropzone">Drop generated .gold or .crucifix files here</div>
-    <div class="coin-drawer" id="drawer"></div>
-  </section>
+  <div class="desktop-shell" id="desktopShell">
+    <div class="desktop-strip"><span>RANS0M DESKTOP</span><span id="desktopClock">00:00</span></div>
+    <section class="fake-window ransom-panel" id="ransom">
+      <header class="window-bar"><span><img src="../Assets/Gold.png" alt=""> ransom.exe</span><div class="window-buttons"><button type="button" aria-label="Minimize">_</button><button type="button" aria-label="Close">X</button></div></header>
+      <div class="window-body">
+        <h2>YOUR FILES HAVE BEEN ENCRYPTED</h2>
+        <div class="ransom-copy">IF YOU DO NOT PAY THIS RANSOM BEFORE THE TIMER ENDS, YOUR FILES WILL <b style="color:red">UNRECOVERABLE BY ANY MEANS.</b></div>
+        <div class="stats"><div class="stat"><span id="amount">500</span> GOLD</div><div class="stat" id="timer">TIME: 00:00</div></div>
+        <div class="dropzone" id="dropzone">Drop generated .gold or .crucifix files here</div>
+        <div class="coin-drawer" id="drawer"></div>
+      </div>
+    </section>
+    <section class="fake-window explorer-window" id="explorer">
+      <header class="window-bar"><span><img src="../Assets/Gold.png" alt=""> File Explorer</span><div class="window-buttons"><button type="button" aria-label="Minimize">_</button><button type="button" aria-label="Close">X</button></div></header>
+      <div class="explorer-toolbar">This PC &gt; Desktop &gt; gold_coins</div>
+      <div class="explorer-files" id="explorerFiles"></div>
+      <footer class="explorer-footer"><span id="explorerStatus">Select a coin to transfer</span><button id="transferCoins" type="button">Transfer selected</button></footer>
+    </section>
+    <section class="fake-window sprite-window" id="spriteWindow">
+      <header class="window-bar"><span><img src="../Assets/ransom_idle.png" alt=""> ransom_sprite.exe</span><div class="window-buttons"><button type="button" aria-label="Minimize">_</button><button type="button" aria-label="Close">X</button></div></header>
+      <img src="../Assets/ransom_idle.png" alt="RANS0M sprite">
+      <strong>MOVE IF YOU DARE</strong>
+    </section>
+  </div>
   <div class="controls"><button id="spawn" type="button">Trigger ransom</button><button id="downloadCoins" type="button">Download gold files</button></div>
   <script src="game.js"></script>
 </body>

@@ -8,6 +8,11 @@ const timer = document.querySelector('#timer');
 const drawer = document.querySelector('#drawer');
 const dropzone = document.querySelector('#dropzone');
 const spawn = document.querySelector('#spawn');
+const desktopShell = document.querySelector('#desktopShell');
+const explorerFiles = document.querySelector('#explorerFiles');
+const explorerStatus = document.querySelector('#explorerStatus');
+const transferCoinsButton = document.querySelector('#transferCoins');
+const desktopClock = document.querySelector('#desktopClock');
 let ransomLeft = 0;
 let ransomTime = 0;
 let active = false;
@@ -15,12 +20,18 @@ let mouseMoved = false;
 let usedCoins = new Set();
 let tauntWindows = [];
 let mouseListener;
+let selectedCoins = new Set();
+let coinEntries = [];
 
 const tauntImages = ['glitch1.jpg', 'glitch2.jpeg', 'glitch3.jpg', 'glitch4.jpg', 'glitch5.jpg', 'idiot.png', 'tauntface.png', 'tauntflower.png'];
 const tauntTitles = ['RANS0M', 'MOSNAR', 'RANSOM', 'M0NARS', 'YOU ARE AN IDIOT', 'Untitled', 'I FOUND YOU', 'RANSOM.exe'];
 
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-function showOnly(section) { [warning, attack, download, ransom].forEach(item => item.style.display = item === section ? '' : 'none'); }
+function showOnly(section) {
+  [warning, attack, download].forEach(item => item.style.display = item === section ? '' : 'none');
+  desktopShell.classList.toggle('open', section === ransom);
+  ransom.style.display = section === ransom ? '' : 'none';
+}
 function randomItem(items) { return items[Math.floor(Math.random() * items.length)]; }
 function openTaunt() {
   const popup = tauntWindows.shift() || window.open('taunt.html', `taunt-${Date.now()}`, 'popup,width=350,height=350,resizable=no');
@@ -46,6 +57,49 @@ function createCoin(value) {
   coin.dataset.id = crypto.randomUUID();
   coin.addEventListener('dragstart', event => event.dataTransfer.setData('text/plain', coin.dataset.id));
   drawer.append(coin);
+  const entry = document.createElement('button');
+  entry.type = 'button';
+  entry.className = 'explorer-file';
+  entry.dataset.id = coin.dataset.id;
+  entry.innerHTML = `<img src="../Assets/Gold.png" alt=""> <span>coin${value}.gold</span><small>${value} GOLD</small>`;
+  entry.addEventListener('click', () => {
+    entry.classList.toggle('selected');
+    if (entry.classList.contains('selected')) selectedCoins.add(entry.dataset.id);
+    else selectedCoins.delete(entry.dataset.id);
+    explorerStatus.textContent = `${selectedCoins.size} coin${selectedCoins.size === 1 ? '' : 's'} selected`;
+  });
+  explorerFiles.append(entry);
+  coinEntries.push({ entry, coin });
+}
+function transferCoins() {
+  coinEntries.filter(item => selectedCoins.has(item.coin.dataset.id)).forEach(item => {
+    if (usedCoins.has(item.coin.dataset.id)) return;
+    usedCoins.add(item.coin.dataset.id);
+    ransomLeft -= Number(item.coin.dataset.value);
+    item.entry.remove();
+    item.coin.remove();
+  });
+  selectedCoins.clear();
+  explorerStatus.textContent = 'Coins transferred to ransom.exe';
+  updateStats();
+  if (ransomLeft <= 0) window.location.href = 'thank-you.html';
+}
+function makeWindowInteractive(windowElement) {
+  const bar = windowElement.querySelector('.window-bar');
+  let drag = null;
+  bar.addEventListener('pointerdown', event => {
+    if (event.target.closest('button')) return;
+    windowElement.style.zIndex = String(Date.now());
+    const rect = windowElement.getBoundingClientRect();
+    drag = { x: event.clientX, y: event.clientY, left: rect.left, top: rect.top };
+    bar.setPointerCapture(event.pointerId);
+  });
+  bar.addEventListener('pointermove', event => {
+    if (!drag) return;
+    windowElement.style.left = `${Math.max(0, drag.left + event.clientX - drag.x)}px`;
+    windowElement.style.top = `${Math.max(28, drag.top + event.clientY - drag.y)}px`;
+  });
+  bar.addEventListener('pointerup', () => { drag = null; });
 }
 function downloadCoins() {
   [25, 50, 100, 250, 500].forEach((value, index) => {
@@ -77,6 +131,7 @@ async function startRansom() {
   ransomTime = 90;
   updateStats();
   showOnly(ransom);
+  desktopClock.textContent = '00:00';
   for (let i = 0; i < 9; i++) openTaunt();
   const interval = setInterval(() => { ransomTime--; updateStats(); if (ransomTime <= 0 || ransomLeft <= 0) clearInterval(interval); }, 1000);
   while (ransomTime > 0 && ransomLeft > 0) await sleep(100);
@@ -104,4 +159,6 @@ dropzone.addEventListener('drop', event => { event.preventDefault(); dropzone.cl
 spawn.addEventListener('click', startRansom);
 spawn.addEventListener('click', reserveTauntWindows, { once: true });
 document.querySelector('#downloadCoins').addEventListener('click', downloadCoins);
+transferCoinsButton.addEventListener('click', transferCoins);
 for (const value of [25, 50, 100, 250, 500]) createCoin(value);
+document.querySelectorAll('.fake-window').forEach(makeWindowInteractive);

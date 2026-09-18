@@ -26,7 +26,30 @@ h1 { color: #ff2b1c; letter-spacing: 8px; margin: 12px 0; }
 .download-bar { height: 30px; border: 2px solid #fff; margin-top: 24px; background: repeating-linear-gradient(90deg, #ffcf25 0 20px, #6f0000 20px 25px); animation: load 1.2s linear infinite; }
 @keyframes load { to { background-position: 45px 0; } }
 .controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
-.ransom-panel { display: none; min-height: 390px; }
+.desktop-shell { display: none; position: fixed; inset: 0; overflow: hidden; background: repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 2px, transparent 2px 4px), #260000; }
+.desktop-shell.open { display: block; }
+.desktop-strip { height: 28px; display: flex; justify-content: space-between; padding: 5px 10px; color: #ffcf25; background: #090000; border-bottom: 2px solid #ff2b1c; font-size: 12px; }
+.fake-window { position: absolute; display: block; min-width: 280px; min-height: 150px; resize: both; overflow: auto; border: 2px solid #fff; background: #f82b1c; box-shadow: 8px 8px 0 #090000; }
+.window-bar { height: 30px; display: flex; align-items: center; justify-content: space-between; padding: 3px 5px; color: #fff; background: #7d0000; border-bottom: 2px solid #fff; cursor: move; user-select: none; }
+.window-bar span { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; }
+.window-bar img { width: 22px; height: 22px; object-fit: contain; }
+.window-buttons { display: flex; gap: 3px; }
+.window-buttons button { padding: 0; width: 22px; height: 21px; border: 1px solid #fff; color: #fff; background: #3d0000; }
+.window-body { padding: 18px; }
+.ransom-panel { left: 7%; top: 11%; width: min(560px, 56vw); height: 470px; z-index: 3; }
+.explorer-window { left: 53%; top: 17%; width: min(430px, 42vw); height: 390px; z-index: 4; background: #d9d9d9; color: #111; }
+.sprite-window { left: 20%; top: 68%; width: 230px; height: 190px; z-index: 5; text-align: center; background: #090000; color: #ffcf25; }
+.sprite-window > img { width: 100px; height: 100px; object-fit: contain; display: block; margin: 15px auto 4px; animation: shake 160ms infinite alternate; }
+.sprite-window strong { font-size: 12px; }
+.explorer-toolbar { padding: 8px; background: #eee; border-bottom: 1px solid #777; font-size: 12px; }
+.explorer-files { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 10px; height: 265px; overflow: auto; background: #fff; }
+.explorer-file { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 2px; border: 1px solid transparent; background: transparent; color: #111; font: inherit; cursor: pointer; }
+.explorer-file:hover, .explorer-file.selected { border-color: #245c9b; background: #c8e2ff; }
+.explorer-file img { width: 38px; height: 38px; object-fit: contain; }
+.explorer-file span { font-size: 11px; }
+.explorer-file small { font-size: 10px; color: #555; }
+.explorer-footer { display: flex; align-items: center; gap: 7px; padding: 7px; background: #eee; border-top: 1px solid #777; font-size: 10px; }
+.explorer-footer button { padding: 6px 8px; margin-left: auto; font-size: 10px; }
 .ransom-panel h2 { font-size: clamp(25px, 6vw, 44px); text-align: center; margin: 0 0 14px; }
 .ransom-copy { background: #000; padding: 16px; text-align: center; }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
@@ -42,3 +65,4 @@ h1 { color: #ff2b1c; letter-spacing: 8px; margin: 12px 0; }
 .result.crucifix { background: #000; }
 .result img { max-width: 90vw; max-height: 80vh; }
 @media (max-width: 600px) { .warning { grid-template-columns: 1fr; text-align: center; } .warning img { margin: auto; } .panel { padding: 12px; } }
+@media (max-width: 700px) { .fake-window { transform: scale(.82); transform-origin: top left; } .ransom-panel { left: 2%; top: 8%; width: 96vw; } .explorer-window { left: 10%; top: 42%; width: 90vw; } .sprite-window { left: 52%; top: 73%; } }

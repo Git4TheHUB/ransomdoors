@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Ixar")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0.0+4002bd6d2ea25aeae4554435f1a29fc61c4a38be")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.0.0.0+1dd1db71d75d47d8e5ee5f78da7e00b725893962")]
 [assembly: System.Reflection.AssemblyProductAttribute("rans0m")]
 [assembly: System.Reflection.AssemblyTitleAttribute("rans0m")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.0.0.0")]
